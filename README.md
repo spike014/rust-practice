@@ -1,2 +1,2 @@
 # rust-practice
-My Rust practice.
+My Rust practices.
