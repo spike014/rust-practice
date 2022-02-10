@@ -10,6 +10,13 @@ impl Rectangle {
     pub fn width(&self) -> u32 {
         return self.width;
     }
+
+    /*
+    需要注意的是，self 依然有所有权的概念：
+        self 表示 Rectangle 的所有权转移到该方法中，这种形式用的较少
+        &self 表示该方法对 Rectangle 的不可变借用
+        &mut self 表示可变借用
+    */
 }
 
 fn main() {
