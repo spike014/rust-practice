@@ -1,4 +1,6 @@
 #![allow(unused)]
+
+use std::process::Output;
 pub trait Summary {
     // fn summarize(&self) -> String;
     fn summarize(&self) -> String {     // 默认实现
@@ -6,6 +8,7 @@ pub trait Summary {
     }
     // 默认实现允许调用相同特征中的其他方法，哪怕这些方法没有默认实现。
 }
+
 pub struct Post {
     pub title: String,   // 标题
     pub author: String,  // 作者
@@ -20,7 +23,7 @@ pub struct Weibo {
 }
 
 impl Summary for Weibo {
-    fn summarize(&self) -> String {
+    fn summarize(&self) -> String { // 重写了默认实现
         format!("{}发表了微博{}", self.username, self.content)
     }
 }
