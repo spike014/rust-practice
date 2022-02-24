@@ -14,19 +14,19 @@
   - 生成文档
 
     ```sh
-    $ cargo doc
+    cargo doc
     ```
 
   - 在浏览器查看文档
 
     ```sh
-    $ cargo doc --open
+    cargo doc --open
     ```
 
   - 运行测试（包括文档测试 【文档注释里面的测试代码】）：
 
     ```sh
-    $ cargo test
+    cargo test
     ```
 
     > 只会运行位于 `lib` 类型包（包括被 `lib` 类型包使用的模块）的文档测试，其他的文档测试不会运行。
@@ -55,4 +55,3 @@ pub mod hosting {
 - [个人笔记例子](./crate_module/src/front_of_house.rs)
 
 - [from rust-course (github.com)](https://github.com/yaoming00/rust-course/blob/main/contents/basic/comment.md#一个综合例子)
-
