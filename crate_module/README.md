@@ -96,5 +96,5 @@ pub mod a {
 
 - `pub(in <path>)` 表示在某个路径代表的模块中可见，其中 `path` 必须是父模块或者祖先模块
 
-一个很酷的综合例子： [使用use引入模块及受限可见性 - 一个综合例子](https://course.rs/basic/crate-module/use.html#一个综合例子)
+一个很酷的综合例子： [rust-course/use.md at main · rust-course (github.com)](https://github.com/yaoming00/rust-course/blob/main/contents/basic/crate-module/use.md#一个综合例子)
 

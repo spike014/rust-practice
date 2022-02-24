@@ -13,7 +13,7 @@ pub fn eat_at_restaurant() {
     hosting::add_to_waitlist();
 }
 
-fn main() {
+fn test() {
     eat_at_restaurant();
     println!("{}", rand::thread_rng().gen_range(1..10))
 }
