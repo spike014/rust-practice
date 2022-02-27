@@ -4,8 +4,9 @@ My Rust practices.
 
 Learn from:
 
-- [rust-course](https://course.rs/) || [rust-course repository](https://github.com/sunface/rust-course)
+- [The Rust Programming Language](https://rustwiki.org/zh-CN/book/)
 - [rust-by-example](https://rustwiki.org/zh-CN/rust-by-example/)
+- [rust-course](https://course.rs/) || [rust-course repository](https://github.com/sunface/rust-course)
 
 > Rename *.rs to main.rs before run the example.
 
@@ -29,4 +30,4 @@ Learn from:
 
 ---
 
-- [lifetime](./lifetime.md)
+- [ ] [lifetime](./lifetime.md)

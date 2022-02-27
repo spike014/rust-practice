@@ -9,7 +9,7 @@
     fn m2<'a, 'b>(x: &'a i32, y: &'b i32);
     ```
 
-  - 如果只有一个输入生命周期（即函数参数只有一个引用类型），那么该生命周期会被赋予所有输出生命周期。
+  - 如果只有一个输入生命周期，那么该生命周期会被赋予所有输出生命周期。
 
     ```rust
     fn m<'a>(x: &'a i32) -> &i32; // x 的生命周期会被赋予返回值 &i32 
@@ -41,7 +41,7 @@
   
   如字符串字面量 `&str`, `'static` 在程序退出之前都不会被丢弃。
 
-  > :warning: 需要谨慎使用，有可能会导致内存泄漏等问题。
+  :warning: 需要谨慎使用，有可能会导致内存泄漏等问题。
 
   ```rust
   let s: &'static str = "life is so fucked up huh. So what? I still alive motherfucker.";
