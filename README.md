@@ -25,8 +25,9 @@ Learn from:
 - [**trait**](./trait_/src)
 - [**type convert**](./type_convert/src/main.rs)
 - [**crate & module**](./crate_module)
-- [comment](./comment.md)
+- [comment (with Docs test)](./comment.md)
 - [format print](./format-print.md)
+- [test](./test_for/src/lib.rs)
 
 ---
 
