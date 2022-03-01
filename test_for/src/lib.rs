@@ -33,7 +33,7 @@ mod tests {
     }
 
     #[test]
-    fn test_4_test() {
+    fn test_4_test_will_fail_final() {
         assert_eq!(1, 1);               // equal
         // assert_eq!(1, 2); failed
 
@@ -70,6 +70,65 @@ mod tests {
             println!("rect1 is {:?}", rect1);
         }
         ```
-        通常可以直接在结构体或枚举上添加 #[derive(PartialEq, Debug)]*/ 
+        通常可以直接在结构体或枚举上添加 #[derive(PartialEq, Debug)]*/
+
+        // 自定义失败信息，类似于 format! 输出
+        assert!(false, "[自定义信息]===》This test failed. Get errcode: {}", 500)
     }
+
+
+    // 使用 should_panic 检查 panic
+    // #[should_panic] 属性位于 #[test] 之后，对应的测试函数之前。
+    #[test]
+    #[should_panic]
+    fn test_should_panci() {
+        panic!("I panic here.")
+    }
+    /*
+    should_panic 测试结果可能会非常含糊不清，因为它只是告诉我们代码并没有产生 panic。
+    should_panic 甚至在一些不是我们期望的原因而导致 panic 时也会通过。
+    为了使 should_panic 测试结果更精确，
+    我们可以给 should_panic 属性增加一个可选的 expected 参数。*/
+    #[test]
+    #[should_panic(expected = "Guess value must be less than or equal to 100")]
+    // #[should_panic(expected = "Guess value must be greater than or equal to 1")]
+    //    ^
+    //  failed
+    fn greater_than_100() {
+        Guess::new(200);
+    }
+    // expected 信息的选择取决于 panic 信息有多独特或动态，和你希望测试有多准确。
+    // So rusty!
+
+
+    #[test]
+    fn it_works_should_fail() -> Result<(), String> {
+        if 2 + 2 == 5 {
+            Ok(())
+        } else {
+            Err(String::from("two plus two does not equal four"))
+        }
+    }
+    // 不能对这些使用 Result<T, E> 的测试使用 #[should_panic] 标注。
+    // 相反应该在测试失败时直接返回 Err 值。
+}
+
+impl Guess {
+    pub fn new(value: i32) -> Guess {
+        if value < 1 {
+            panic!("Guess value must be greater than or equal to 1, got {}.",
+                   value);
+        } else if value > 100 {
+            panic!("Guess value must be less than or equal to 100, got {}.",
+                   value);
+        }
+
+        Guess {
+            value
+        }
+    }
+}
+
+pub struct Guess {
+    value: i32,
 }
