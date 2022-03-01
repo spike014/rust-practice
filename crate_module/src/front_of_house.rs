@@ -12,11 +12,10 @@ pub mod hosting {
     /// # Examples
     ///
     /// ```
-    /// use restaurant::hosting;
-    /// let arg = 6;
+    /// use crate_module::hosting;
     /// # println!("这里在文档看不到，但是会在测试的时候运行。因为在开头加上了 # ");
     /// # // 这个注释也是看不到的因为加上了 # 被隐藏了起来。
-    /// assert_eq!(hosting::add_one(arg), 7);
+    /// assert_eq!(hosting::add_one(6), 7);
     /// ```
     /// # Panics
     ///
@@ -43,9 +42,7 @@ pub mod hosting {
     /// 同名项使用 struct@ fn@ !  (! 表示跳转到同名宏)
     /// 跳转到结构体  [`Foo`](struct@Foo)
     /// [`Self::test_comment()`] 跳转该结构体实现的 test_comment 方法
-    /// ```
     /// 以上 跳转到方法 (VSCode 使用 rust-analyzer 插件暂不可以，文档内可以)
-    /// ```
     pub struct Bar;
 
     impl Bar {
