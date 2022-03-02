@@ -14,6 +14,7 @@ fn main() {
         sign_in_count: 1,
     };
 
+    // .. 语法指定了剩余未显式设置值的字段应有与给定实例对应字段相同的值
     let user2 = User {
         email: String::from("another@example.com"),
         ..user1

@@ -6,12 +6,36 @@ struct Rectangle {
     height: u32,
 }
 
+pub fn add_two(n: i32) -> i32 {
+    n + 2
+}
+
 impl Rectangle {
     fn can_hold(&self, other: &Rectangle) -> bool {
         self.width > other.width && self.height > other.height
     }
 }
 
+
+impl Guess {
+    pub fn new(value: i32) -> Guess {
+        if value < 1 {
+            panic!("Guess value must be greater than or equal to 1, got {}.",
+                   value);
+        } else if value > 100 {
+            panic!("Guess value must be less than or equal to 100, got {}.",
+                   value);
+        }
+
+        Guess {
+            value
+        }
+    }
+}
+
+pub struct Guess {
+    value: i32,
+}
 
 #[cfg(test)]
 mod tests {
@@ -33,6 +57,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_4_test_will_fail_final() {
         assert_eq!(1, 1);               // equal
         // assert_eq!(1, 2); failed
@@ -102,6 +127,7 @@ mod tests {
 
 
     #[test]
+    #[ignore]
     fn it_works_should_fail() -> Result<(), String> {
         if 2 + 2 == 5 {
             Ok(())
@@ -111,24 +137,85 @@ mod tests {
     }
     // 不能对这些使用 Result<T, E> 的测试使用 #[should_panic] 标注。
     // 相反应该在测试失败时直接返回 Err 值。
-}
 
-impl Guess {
-    pub fn new(value: i32) -> Guess {
-        if value < 1 {
-            panic!("Guess value must be greater than or equal to 1, got {}.",
-                   value);
-        } else if value > 100 {
-            panic!("Guess value must be less than or equal to 100, got {}.",
-                   value);
+
+    // 将测试线程设置为 1，告诉程序不要使用任何并行机制。
+    // 这也会比并行运行花费更多时间，不过在有共享的状态时，测试就不会潜在的相互干扰了。
+    // $ cargo test -- --test-threads=1
+
+
+    // 显示打印输出
+    // $ cargo test -- --nocapture
+    // 类似于 go test -v
+    // ps： 实测（cargo 1.58.0 (f01b232bc 2022-01-19)）单元测试没有彩色打印输出
+
+    // 运行指定测试
+    // 1. 例如，运行 fn test_xxxx() {} 这一测试函数
+    // $ cargo test test_xxxx
+    // 类似于 go test -timeout 10m -run ^Testxxxx$
+    //
+    // 2. 此命令支持前缀匹配模块名，测试函数名
+    // 存在 test_111 test_222 test111 三个测试
+    // $ cargo test test_
+    // 将会运行 test_111 test_222 这两个测试
+    //
+    // 存在 tests1 tests222 test_111 三个
+    // $ cargo test test_
+    // 将会运行 test_111 test_222 这两个测试
+    //
+    // 还支持 $ cargo test tests::test_ 这种形式的前缀匹配
+
+    // 忽略某些测试
+    /*
+        #[test]
+        #[ignore]
+        fn expensive_test() {
+            // 需要运行一个小时的代码
         }
-
-        Guess {
-            value
-        }
-    }
+    */
+    // 此时 cargo test 会显示 test result: ... 1 ignored; ...
+    //
+    // 只运行被忽略的测试
+    // $ cargo test -- --ignored
 }
 
-pub struct Guess {
-    value: i32,
-}
+
+// 测试组织结构指南
+/*
+    1. 【单元测试】与他们要测试的代码共同存放在位于 src 目录下相同的文件中。
+       规范是在每个文件中创建包含测试函数的 tests 模块，并使用 cfg(test) 标注模块。
+      
+       测试模块的 #[cfg(test)] 标注告诉 Rust 只在执行 cargo test 时才编译和运行测试代码，
+       而在运行 cargo build 时不这么做。
+
+    2. 在 Rust 中，【集成测试】对于你需要测试的库来说完全是外部的。
+        同其他使用库的代码一样使用库文件，也就是说它们只能调用一部分库中的公有 API 。
+        集成测试的目的是测试库的多个部分能否一起正常工作。
+        一些单独能正确运行的代码单元集成在一起也可能会出现问题，所以集成测试的覆盖率也是很重要的。
+        为了创建集成测试，你需要先在项目根目录创建一个 tests 目录，与 src 同级。
+        Cargo 会将每一个文件当作单独的 crate 来编译。
+
+        2.1 运行指定集成测试
+         $ cargo test --test integration_test
+
+        2.2 帮助函数
+            在 tests 下新建 helper.rs 文件，编写可见的相关函数。
+            为了不让 helper 出现在测试输出中，我们将创建 tests/common/mod.rs ，
+            而不是创建 tests/common.rs 。
+            这是一种 Rust 的命名规范，这样命名告诉 Rust 不要将 common 看作一个集成测试文件。
+
+            ps: 
+            将 helper.rs 修改为 common/helper.rs 后，cargo test 报错：
+            to create the module `common`, create file "tests/common.rs" or "tests/common/mod.rs"
+            也就是说 common 下文件名必须是 mod.rs
+
+          2.2.1 二进制 crate 的集成测试
+              如果项目是二进制 crate 并且只包含 src/main.rs 而没有 src/lib.rs，
+              这样就不可能在 tests 目录创建集成测试并使用 extern crate 导入 src/main.rs 中定义的函数。
+              只有库 crate 才会向其他 crate 暴露了可供调用和使用的函数；二进制 crate 只意在单独运行。
+  
+              为什么 Rust 二进制项目的结构明确采用 src/main.rs 调用 src/lib.rs 中的逻辑的方式？
+              因为通过这种结构，集成测试 就可以 通过 extern crate 测试库 crate 中的主要功能了，
+              而如果这些重要的功能没有问题的话，src/main.rs 中的少量代码也就会正常工作且不需要测试。
+              ps: 当初你总觉得用的很不爽，但是后来都明白爸妈的好了吧。 So rusty~
+*/
