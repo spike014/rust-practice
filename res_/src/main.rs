@@ -1,4 +1,7 @@
+#![allow(unused)]
 use std::{fs::File, io::{ErrorKind, Read}, io, fs, net::IpAddr};
+use std::error::Error;
+
 
 fn main() {
     // panic!("Hello, world!");
@@ -85,9 +88,20 @@ fn read_file_txt_v2(path: &String) -> Result<String, io::Error> {
     Ok(s)
 }
 
+/*如果 Result 的值是 Ok，这个表达式将会返回 Ok 中的值而程序将继续执行。
+如果值是 Err，Err 中的值将作为整个函数的返回值，提前进行返回，不再执行后面的逻辑
+就好像使用了 return 关键字一样，这样错误值就被传播给了调用者。*/
+
 /// 更爽的标准库读取
 fn read_file_txt_v3(path: &String) -> Result<String, io::Error> {
     fs::read_to_string(path)
+}
+
+// 目前可以理解 Box<dyn Error> 为使用 ? 时 main 允许返回的 “任何类型的错误”。
+fn main_2() -> Result<(), Box<dyn Error>> {
+    let f = File::open("hello.txt")?;
+
+    Ok(())
 }
 
 /*
