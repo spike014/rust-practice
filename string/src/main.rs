@@ -8,7 +8,7 @@ fn main() {
     // 最后s的内容是"hello,world!"
     assert_eq!(s,"hello,world!");
 
-    // 从现有的&str切片创建String类型
+    // 从现有的&str (字符串字面量) 创建String类型
     let mut s = "hello,world".to_string();
     // 将字符'!'推入s中
     s.push('!');
@@ -39,4 +39,8 @@ fn main() {
     let h = &s1[0..1];
     println!("{}",h);
 
+    println!("{}", String::from("nihao,").len());
+    println!("{}", String::from("你好，").len());
+    println!("{}", "nihao,".len()); // 一个字节可以保存一个英文字符
+    println!("{}", "你好，".len()); // 三个字节保存一个中文字符
 }
