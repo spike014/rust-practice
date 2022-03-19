@@ -32,3 +32,4 @@ Learn from:
 ---
 
 - [ ] [lifetime](./lifetime.md)
+- [x] [closure](./closure_/src/main.rs)
